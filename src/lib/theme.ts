@@ -2,14 +2,14 @@ export type Theme = "light" | "dark";
 
 const STORAGE_KEY = "voucher-theme";
 
-function getSystemTheme(): Theme {
+export function getSystemTheme(): Theme {
   if (typeof window === "undefined") return "dark";
   return window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
 }
 
-function getStoredTheme(): Theme | null {
+export function getStoredTheme(): Theme | null {
   if (typeof window === "undefined") return null;
   const stored = localStorage.getItem(STORAGE_KEY);
   if (stored === "light" || stored === "dark") return stored;

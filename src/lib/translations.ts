@@ -11,8 +11,10 @@ export const translations = {
     andMore: (n: number) => `…and ${n} more`,
     addVoucher: "Add voucher",
     addVoucherDescription:
-      "Name and due date are required. Code and category are optional.",
+      "Name and due date are required. Code, category and price are optional.",
     name: "Name",
+    priceOptional: "Price (optional)",
+    pricePlaceholder: "e.g. 50",
     namePlaceholder: "e.g. Restaurant gift card",
     dueDate: "Due date",
     dueDatePlaceholder: "MM/DD/YYYY",
@@ -47,6 +49,7 @@ export const translations = {
     lightMode: "Light",
     darkMode: "Dark",
     themeSwitchAria: "Toggle dark mode",
+    priceFormat: (value: number) => `${value} €`,
     category: {
       food: "Food",
       retail: "Retail",
@@ -73,8 +76,10 @@ export const translations = {
     andMore: (n: number) => `…a dalších ${n}`,
     addVoucher: "Přidat voucher",
     addVoucherDescription:
-      "Název a datum platnosti jsou povinné. Kód a kategorie jsou volitelné.",
+      "Název a datum platnosti jsou povinné. Kód, kategorie a cena jsou volitelné.",
     name: "Název",
+    priceOptional: "Cena (volitelné)",
+    pricePlaceholder: "např. 50",
     namePlaceholder: "např. Dárková karta do restaurace",
     dueDate: "Datum platnosti",
     dueDatePlaceholder: "D.M.RRRR",
@@ -113,6 +118,7 @@ export const translations = {
     lightMode: "Světlý",
     darkMode: "Tmavý",
     themeSwitchAria: "Přepnout tmavý režim",
+    priceFormat: (value: number) => `${value} €`,
     category: {
       food: "Jídlo",
       retail: "Maloobchod",

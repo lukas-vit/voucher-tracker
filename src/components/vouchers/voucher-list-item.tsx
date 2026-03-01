@@ -16,6 +16,7 @@ type TranslationShape = {
   expired: string;
   daysLeft: (n: number) => string;
   category: Record<VoucherCategory, string>;
+  priceFormat: (value: number) => string;
 };
 
 type VoucherListItemProps = {
@@ -111,6 +112,11 @@ export function VoucherListItem({
         </div>
 
         <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
+          {voucher.price != null && (
+            <span className="font-medium text-foreground">
+              {t.priceFormat(voucher.price)}
+            </span>
+          )}
           <span className="inline-flex items-center gap-1.5">
             <Calendar className="h-3.5 w-3.5" />
             {formatDueDate(voucher.dueDate, dateLocale)}

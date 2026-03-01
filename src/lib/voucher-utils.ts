@@ -24,6 +24,7 @@ export interface CreateVoucherInput {
   code?: string | null;
   category?: VoucherCategory | null;
   color?: string | null;
+  price?: number | null;
 }
 
 export function createVoucher(input: CreateVoucherInput): Voucher {
@@ -41,6 +42,7 @@ export function createVoucher(input: CreateVoucherInput): Voucher {
     category,
     color,
     createdAt: new Date().toISOString(),
+    price: input.price ?? null,
   };
 }
 
@@ -63,6 +65,7 @@ export function updateVoucher(
     code: input.code?.trim() || null,
     category,
     color,
+    price: input.price ?? existing.price ?? null,
   };
 }
 

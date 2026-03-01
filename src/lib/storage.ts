@@ -8,14 +8,19 @@ export function loadVouchers(): Voucher[] {
     if (!raw) return [];
     const parsed = JSON.parse(raw) as unknown;
     if (!Array.isArray(parsed)) return [];
-    return parsed.filter(
-      (v): v is Voucher =>
+    const list = parsed.filter(
+      (v): v is Record<string, unknown> =>
         v &&
         typeof v === "object" &&
-        typeof (v as Voucher).id === "string" &&
-        typeof (v as Voucher).name === "string" &&
-        typeof (v as Voucher).dueDate === "string"
+        typeof (v as Record<string, unknown>).id === "string" &&
+        typeof (v as Record<string, unknown>).name === "string" &&
+        typeof (v as Record<string, unknown>).dueDate === "string"
     );
+    return list.map((v) => ({
+      ...v,
+      price:
+        typeof (v as Voucher).price === "number" ? (v as Voucher).price : null,
+    })) as Voucher[];
   } catch {
     return [];
   }

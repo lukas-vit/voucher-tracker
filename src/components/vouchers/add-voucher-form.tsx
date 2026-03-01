@@ -24,6 +24,8 @@ type TranslationShape = {
   codePlaceholder: string;
   categoryOptional: string;
   none: string;
+  priceOptional: string;
+  pricePlaceholder: string;
   cancel: string;
   save: string;
   category: Record<VoucherCategory, string>;
@@ -51,6 +53,7 @@ export function AddVoucherForm({
   const [dueDate, setDueDate] = useState("");
   const [code, setCode] = useState("");
   const [category, setCategory] = useState<VoucherCategory | "">("");
+  const [price, setPrice] = useState("");
   const [justAdded, setJustAdded] = useState(false);
 
   const isEditMode = editingVoucher !== null;
@@ -62,6 +65,9 @@ export function AddVoucherForm({
       setDueDate(editingVoucher.dueDate);
       setCode(editingVoucher.code ?? "");
       setCategory(editingVoucher.category ?? "");
+      setPrice(
+        editingVoucher.price != null ? String(editingVoucher.price) : ""
+      );
       formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [editingVoucher]);
@@ -71,18 +77,26 @@ export function AddVoucherForm({
     setDueDate("");
     setCode("");
     setCategory("");
+    setPrice("");
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedName = name.trim();
     if (!trimmedName || !dueDate) return;
+    const priceNum = price.trim() === "" ? null : parseFloat(price.trim());
+    const priceValue =
+      priceNum !== null && !Number.isNaN(priceNum) && priceNum >= 0
+        ? priceNum
+        : null;
+
     if (isEditMode && editingVoucher) {
       onUpdate(editingVoucher.id, {
         name: trimmedName,
         dueDate,
         code: code || null,
         category: category || null,
+        price: priceValue,
       });
       resetForm();
       onEditCancel();
@@ -92,6 +106,7 @@ export function AddVoucherForm({
         dueDate,
         code: code || null,
         category: category || null,
+        price: priceValue,
       });
       resetForm();
       setIsOpen(false);
@@ -210,6 +225,19 @@ export function AddVoucherForm({
               ))}
             </Select>
           </div>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="add-price">{t.priceOptional}</Label>
+          <Input
+            id="add-price"
+            type="number"
+            min={0}
+            step={0.01}
+            placeholder={t.pricePlaceholder}
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            aria-label={t.priceOptional}
+          />
         </div>
 
         <div className="flex justify-end gap-2 border-t pt-4">

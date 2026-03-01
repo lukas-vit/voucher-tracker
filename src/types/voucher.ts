@@ -39,6 +39,8 @@ export interface Voucher {
   category: VoucherCategory | null;
   color: string; // hex, either user-set or from category
   createdAt: string; // ISO
+  /** Value in major currency units (e.g. EUR), null if not set */
+  price: number | null;
 }
 
 export type SortField = "dueDate" | "name";
