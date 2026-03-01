@@ -47,7 +47,7 @@ export const translations = {
     lightMode: "Light",
     darkMode: "Dark",
     themeSwitchAria: "Toggle dark mode",
-    priceFormat: (value: number) => `${value} €`,
+    priceFormat: (value: number) => `${value} Kč`,
     category: {
       food: "Food",
       retail: "Retail",
@@ -114,7 +114,7 @@ export const translations = {
     lightMode: "Světlý",
     darkMode: "Tmavý",
     themeSwitchAria: "Přepnout tmavý režim",
-    priceFormat: (value: number) => `${value} €`,
+    priceFormat: (value: number) => `${value} Kč`,
     category: {
       food: "Jídlo",
       retail: "Maloobchod",
