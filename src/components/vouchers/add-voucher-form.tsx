@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -54,6 +54,7 @@ export function AddVoucherForm({
   const [justAdded, setJustAdded] = useState(false);
 
   const isEditMode = editingVoucher !== null;
+  const formRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (editingVoucher) {
@@ -61,6 +62,7 @@ export function AddVoucherForm({
       setDueDate(editingVoucher.dueDate);
       setCode(editingVoucher.code ?? "");
       setCategory(editingVoucher.category ?? "");
+      formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [editingVoucher]);
 
@@ -133,7 +135,10 @@ export function AddVoucherForm({
   }
 
   return (
-    <div className="animate-scale-in rounded-2xl border bg-card shadow-lg">
+    <div
+      ref={formRef}
+      className="animate-scale-in rounded-2xl border bg-card shadow-lg"
+    >
       <div className="flex items-center justify-between border-b px-5 py-4">
         <div>
           <h2 className="font-semibold">
