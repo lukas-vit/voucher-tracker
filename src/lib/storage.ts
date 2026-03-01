@@ -16,11 +16,13 @@ export function loadVouchers(): Voucher[] {
         typeof (v as Record<string, unknown>).name === "string" &&
         typeof (v as Record<string, unknown>).dueDate === "string"
     );
-    return list.map((v) => ({
-      ...v,
-      price:
-        typeof (v as Voucher).price === "number" ? (v as Voucher).price : null,
-    })) as Voucher[];
+    return list.map((v) => {
+      const price =
+        typeof (v as Record<string, unknown>).price === "number"
+          ? (v as Record<string, unknown>).price as number
+          : null;
+      return { ...v, price } as Voucher;
+    });
   } catch {
     return [];
   }

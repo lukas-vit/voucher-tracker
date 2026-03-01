@@ -26,6 +26,7 @@ type TranslationShape = {
   daysLeft: (n: number) => string;
   voucherCount: (count: number) => string;
   category: Record<VoucherCategory, string>;
+  priceFormat: (value: number) => string;
 };
 
 type VoucherListProps = {
