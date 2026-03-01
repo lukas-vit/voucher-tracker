@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Trash2, Calendar, Copy, Check } from "lucide-react";
+import { Trash2, Calendar, Copy, Check, Pencil } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatDueDate, daysUntil } from "@/lib/date-utils";
 import type { Voucher, VoucherCategory } from "@/types/voucher";
@@ -11,6 +11,7 @@ import { useState } from "react";
 type TranslationShape = {
   markAsUsedAndRemove: (name: string) => string;
   remove: (name: string) => string;
+  edit: (name: string) => string;
   soon: string;
   expired: string;
   daysLeft: (n: number) => string;
@@ -24,6 +25,7 @@ type VoucherListItemProps = {
   dateLocale: string;
   onRemove: (id: string) => void;
   onMarkUsed: (id: string) => void;
+  onEdit: (voucher: Voucher) => void;
   t: TranslationShape;
 };
 
@@ -34,6 +36,7 @@ export function VoucherListItem({
   dateLocale,
   onRemove,
   onMarkUsed,
+  onEdit,
   t,
 }: VoucherListItemProps) {
   const [copied, setCopied] = useState(false);
@@ -141,16 +144,28 @@ export function VoucherListItem({
         </div>
       </div>
 
-      <Button
-        type="button"
-        variant="ghost"
-        size="icon"
-        className="shrink-0 opacity-0 transition-all duration-200 group-hover:opacity-100 focus-visible:opacity-100 hover:text-destructive"
-        onClick={handleRemove}
-        aria-label={t.remove(voucher.name)}
-      >
-        <Trash2 className="h-4 w-4" />
-      </Button>
+      <div className="flex shrink-0 items-center gap-0.5">
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="opacity-0 transition-all duration-200 group-hover:opacity-100 focus-visible:opacity-100"
+          onClick={() => onEdit(voucher)}
+          aria-label={t.edit(voucher.name)}
+        >
+          <Pencil className="h-4 w-4" />
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="opacity-0 transition-all duration-200 group-hover:opacity-100 focus-visible:opacity-100 hover:text-destructive"
+          onClick={handleRemove}
+          aria-label={t.remove(voucher.name)}
+        >
+          <Trash2 className="h-4 w-4" />
+        </Button>
+      </div>
     </li>
   );
 }

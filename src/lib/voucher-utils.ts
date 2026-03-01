@@ -44,6 +44,28 @@ export function createVoucher(input: CreateVoucherInput): Voucher {
   };
 }
 
+export type UpdateVoucherInput = CreateVoucherInput;
+
+export function updateVoucher(
+  existing: Voucher,
+  input: UpdateVoucherInput
+): Voucher {
+  const category = input.category ?? null;
+  const color =
+    input.color && input.color !== DEFAULT_COLOR
+      ? input.color
+      : getColorForCategory(category);
+
+  return {
+    ...existing,
+    name: input.name.trim(),
+    dueDate: input.dueDate,
+    code: input.code?.trim() || null,
+    category,
+    color,
+  };
+}
+
 export type FilterDue = "all" | "expiring" | "valid";
 
 export interface VoucherFilterState {

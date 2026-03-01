@@ -3,8 +3,10 @@ import type { Voucher } from "@/types/voucher";
 import { loadVouchers, saveVouchers } from "@/lib/storage";
 import {
   createVoucher,
+  updateVoucher as updateVoucherUtil,
   DEFAULT_COLOR,
   type CreateVoucherInput,
+  type UpdateVoucherInput,
 } from "@/lib/voucher-utils";
 
 export function useVouchers() {
@@ -23,6 +25,15 @@ export function useVouchers() {
     setVouchers((prev) => [...prev, createVoucher(input)]);
   }, []);
 
+  const updateVoucher = useCallback((id: string, input: UpdateVoucherInput) => {
+    if (!input.name.trim() || !input.dueDate) return;
+    setVouchers((prev) =>
+      prev.map((v) =>
+        v.id === id ? updateVoucherUtil(v, input) : v
+      )
+    );
+  }, []);
+
   const removeVoucher = useCallback((id: string) => {
     setVouchers((prev) => prev.filter((v) => v.id !== id));
   }, []);
@@ -30,6 +41,7 @@ export function useVouchers() {
   return {
     vouchers,
     addVoucher,
+    updateVoucher,
     removeVoucher,
     defaultColor: DEFAULT_COLOR,
   };

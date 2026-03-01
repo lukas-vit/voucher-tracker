@@ -1,18 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/date-picker";
-import { Plus, X, Sparkles } from "lucide-react";
+import { Plus, X, Sparkles, Pencil } from "lucide-react";
 import { VOUCHER_CATEGORIES } from "@/types/voucher";
 import type { VoucherCategory } from "@/types/voucher";
 import type { CreateVoucherInput } from "@/lib/voucher-utils";
+import type { Voucher } from "@/types/voucher";
 import { cn } from "@/lib/utils";
 
 type TranslationShape = {
   addVoucher: string;
   addVoucherDescription: string;
+  editVoucher: string;
+  editVoucherDescription: string;
   name: string;
   namePlaceholder: string;
   dueDate: string;
@@ -22,17 +25,24 @@ type TranslationShape = {
   categoryOptional: string;
   none: string;
   cancel: string;
+  save: string;
   category: Record<VoucherCategory, string>;
 };
 
 type AddVoucherFormProps = {
   onAdd: (input: CreateVoucherInput) => void;
+  editingVoucher: Voucher | null;
+  onEditCancel: () => void;
+  onUpdate: (id: string, input: CreateVoucherInput) => void;
   dateLocale: string;
   t: TranslationShape;
 };
 
 export function AddVoucherForm({
   onAdd,
+  editingVoucher,
+  onEditCancel,
+  onUpdate,
   dateLocale,
   t,
 }: AddVoucherFormProps) {
@@ -42,6 +52,17 @@ export function AddVoucherForm({
   const [code, setCode] = useState("");
   const [category, setCategory] = useState<VoucherCategory | "">("");
   const [justAdded, setJustAdded] = useState(false);
+
+  const isEditMode = editingVoucher !== null;
+
+  useEffect(() => {
+    if (editingVoucher) {
+      setName(editingVoucher.name);
+      setDueDate(editingVoucher.dueDate);
+      setCode(editingVoucher.code ?? "");
+      setCategory(editingVoucher.category ?? "");
+    }
+  }, [editingVoucher]);
 
   const resetForm = () => {
     setName("");
@@ -54,24 +75,39 @@ export function AddVoucherForm({
     e.preventDefault();
     const trimmedName = name.trim();
     if (!trimmedName || !dueDate) return;
-    onAdd({
-      name: trimmedName,
-      dueDate,
-      code: code || null,
-      category: category || null,
-    });
-    resetForm();
-    setIsOpen(false);
-    setJustAdded(true);
-    setTimeout(() => setJustAdded(false), 1500);
+    if (isEditMode && editingVoucher) {
+      onUpdate(editingVoucher.id, {
+        name: trimmedName,
+        dueDate,
+        code: code || null,
+        category: category || null,
+      });
+      resetForm();
+      onEditCancel();
+    } else {
+      onAdd({
+        name: trimmedName,
+        dueDate,
+        code: code || null,
+        category: category || null,
+      });
+      resetForm();
+      setIsOpen(false);
+      setJustAdded(true);
+      setTimeout(() => setJustAdded(false), 1500);
+    }
   };
 
   const handleCancel = () => {
     resetForm();
-    setIsOpen(false);
+    if (isEditMode) {
+      onEditCancel();
+    } else {
+      setIsOpen(false);
+    }
   };
 
-  if (!isOpen) {
+  if (!isOpen && !isEditMode) {
     return (
       <Button
         onClick={() => setIsOpen(true)}
@@ -100,9 +136,13 @@ export function AddVoucherForm({
     <div className="animate-scale-in rounded-2xl border bg-card shadow-lg">
       <div className="flex items-center justify-between border-b px-5 py-4">
         <div>
-          <h2 className="font-semibold">{t.addVoucher}</h2>
+          <h2 className="font-semibold">
+            {isEditMode ? t.editVoucher : t.addVoucher}
+          </h2>
           <p className="text-sm text-muted-foreground">
-            {t.addVoucherDescription}
+            {isEditMode
+              ? t.editVoucherDescription
+              : t.addVoucherDescription}
           </p>
         </div>
         <Button
@@ -172,8 +212,17 @@ export function AddVoucherForm({
             {t.cancel}
           </Button>
           <Button type="submit" disabled={!name.trim() || !dueDate}>
-            <Plus className="mr-1.5 h-4 w-4" />
-            {t.addVoucher}
+            {isEditMode ? (
+              <>
+                <Pencil className="mr-1.5 h-4 w-4" />
+                {t.save}
+              </>
+            ) : (
+              <>
+                <Plus className="mr-1.5 h-4 w-4" />
+                {t.addVoucher}
+              </>
+            )}
           </Button>
         </div>
       </form>

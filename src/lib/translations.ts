@@ -37,6 +37,10 @@ export const translations = {
     soon: "Soon",
     expired: "Expired",
     cancel: "Cancel",
+    editVoucher: "Edit voucher",
+    editVoucherDescription: "Update the voucher details below.",
+    save: "Save",
+    edit: (name: string) => `Edit ${name}`,
     voucherCount: (count: number) =>
       count === 1 ? "1 voucher" : `${count} vouchers`,
     category: {
@@ -92,6 +96,10 @@ export const translations = {
     soon: "Brzy",
     expired: "Expirovaný",
     cancel: "Zrušit",
+    editVoucher: "Upravit voucher",
+    editVoucherDescription: "Upravte údaje voucheru níže.",
+    save: "Uložit",
+    edit: (name: string) => `Upravit ${name}`,
     voucherCount: (count: number) => {
       if (count === 1) return "1 voucher";
       if (count >= 2 && count <= 4) return `${count} vouchery`;

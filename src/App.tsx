@@ -1,7 +1,8 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { APP_CONFIG, getDateLocale } from "@/config/app";
 import { useTranslations } from "@/lib/translations";
 import { useVouchers } from "@/hooks/use-vouchers";
+import type { Voucher } from "@/types/voucher";
 import { useVoucherFilters } from "@/hooks/use-voucher-filters";
 import { getExpiringSoonVouchers } from "@/lib/voucher-utils";
 import { PageHeader } from "@/components/layout/page-header";
@@ -13,7 +14,8 @@ export default function App() {
   const t = useTranslations(APP_CONFIG.locale);
   const dateLocale = getDateLocale(APP_CONFIG.locale);
 
-  const { vouchers, addVoucher, removeVoucher } = useVouchers();
+  const { vouchers, addVoucher, updateVoucher, removeVoucher } = useVouchers();
+  const [editingVoucher, setEditingVoucher] = useState<Voucher | null>(null);
   const {
     search,
     setSearch,
@@ -51,6 +53,9 @@ export default function App() {
 
           <AddVoucherForm
             onAdd={addVoucher}
+            editingVoucher={editingVoucher}
+            onEditCancel={() => setEditingVoucher(null)}
+            onUpdate={updateVoucher}
             dateLocale={dateLocale}
             t={t}
           />
@@ -71,6 +76,7 @@ export default function App() {
             dateLocale={dateLocale}
             onRemove={removeVoucher}
             onMarkUsed={removeVoucher}
+            onEdit={setEditingVoucher}
             t={t}
           />
         </div>

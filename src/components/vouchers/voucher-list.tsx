@@ -20,6 +20,7 @@ type TranslationShape = {
   noVouchersMatchFilters: string;
   markAsUsedAndRemove: (name: string) => string;
   remove: (name: string) => string;
+  edit: (name: string) => string;
   soon: string;
   expired: string;
   daysLeft: (n: number) => string;
@@ -43,6 +44,7 @@ type VoucherListProps = {
   dateLocale: string;
   onRemove: (id: string) => void;
   onMarkUsed: (id: string) => void;
+  onEdit: (voucher: Voucher) => void;
   t: TranslationShape;
 };
 
@@ -62,6 +64,7 @@ export function VoucherList({
   dateLocale,
   onRemove,
   onMarkUsed,
+  onEdit,
   t,
 }: VoucherListProps) {
   const isEmpty = vouchers.length === 0;
@@ -127,6 +130,7 @@ export function VoucherList({
                 dateLocale={dateLocale}
                 onRemove={onRemove}
                 onMarkUsed={onMarkUsed}
+                onEdit={onEdit}
                 t={t}
               />
             </div>
