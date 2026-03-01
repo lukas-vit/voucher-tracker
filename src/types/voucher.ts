@@ -22,6 +22,15 @@ export const CATEGORY_COLORS: Record<VoucherCategory, string> = {
   other: "#6b7280",
 };
 
+/** Tailwind classes for card tinting per category */
+export const CATEGORY_CARD_CLASSES: Record<VoucherCategory, string> = {
+  food: "border-emerald-500/20 bg-emerald-500/5",
+  retail: "border-blue-500/20 bg-blue-500/5",
+  travel: "border-violet-500/20 bg-violet-500/5",
+  entertainment: "border-pink-500/20 bg-pink-500/5",
+  other: "border-gray-500/20 bg-gray-500/5",
+};
+
 export interface Voucher {
   id: string;
   name: string;

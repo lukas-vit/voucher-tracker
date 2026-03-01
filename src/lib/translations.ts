@@ -11,15 +11,15 @@ export const translations = {
     andMore: (n: number) => `…and ${n} more`,
     addVoucher: "Add voucher",
     addVoucherDescription:
-      "Name and due date are required. Code, category and color are optional.",
+      "Name and due date are required. Code and category are optional.",
     name: "Name",
     namePlaceholder: "e.g. Restaurant gift card",
     dueDate: "Due date",
+    dueDatePlaceholder: "MM/DD/YYYY",
     voucherCodeOptional: "Voucher code (optional)",
     codePlaceholder: "e.g. SAVE20",
     categoryOptional: "Category (optional)",
     none: "None",
-    color: "Color",
     yourVouchers: "Your vouchers",
     yourVouchersDescription:
       "Sort, filter and search. Check a voucher to mark it as used and remove it.",
@@ -36,6 +36,9 @@ export const translations = {
     remove: (name: string) => `Remove ${name}`,
     soon: "Soon",
     expired: "Expired",
+    cancel: "Cancel",
+    voucherCount: (count: number) =>
+      count === 1 ? "1 voucher" : `${count} vouchers`,
     category: {
       food: "Food",
       retail: "Retail",
@@ -62,15 +65,15 @@ export const translations = {
     andMore: (n: number) => `…a dalších ${n}`,
     addVoucher: "Přidat voucher",
     addVoucherDescription:
-      "Název a datum platnosti jsou povinné. Kód, kategorie a barva jsou volitelné.",
+      "Název a datum platnosti jsou povinné. Kód a kategorie jsou volitelné.",
     name: "Název",
     namePlaceholder: "např. Dárková karta do restaurace",
     dueDate: "Datum platnosti",
+    dueDatePlaceholder: "D.M.RRRR",
     voucherCodeOptional: "Kód voucheru (volitelné)",
     codePlaceholder: "např. SAVE20",
     categoryOptional: "Kategorie (volitelné)",
     none: "Žádná",
-    color: "Barva",
     yourVouchers: "Vaše vouchery",
     yourVouchersDescription:
       "Řazení, filtrování a vyhledávání. Zaškrtnutím označíte voucher jako použitý a odeberete ho.",
@@ -88,6 +91,12 @@ export const translations = {
     remove: (name: string) => `Odebrat ${name}`,
     soon: "Brzy",
     expired: "Expirovaný",
+    cancel: "Zrušit",
+    voucherCount: (count: number) => {
+      if (count === 1) return "1 voucher";
+      if (count >= 2 && count <= 4) return `${count} vouchery`;
+      return `${count} voucherů`;
+    },
     category: {
       food: "Jídlo",
       retail: "Maloobchod",
