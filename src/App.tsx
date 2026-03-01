@@ -6,6 +6,7 @@ import type { Voucher } from "@/types/voucher";
 import { useVoucherFilters } from "@/hooks/use-voucher-filters";
 import { getExpiringSoonVouchers } from "@/lib/voucher-utils";
 import { PageHeader } from "@/components/layout/page-header";
+import { ThemeSwitch } from "@/components/layout/theme-switch";
 import { ExpiringSoonBanner } from "@/components/vouchers/expiring-soon-banner";
 import { AddVoucherForm } from "@/components/vouchers/add-voucher-form";
 import { VoucherList } from "@/components/vouchers/voucher-list";
@@ -43,6 +44,14 @@ export default function App() {
             title={t.appTitle}
             subtitle={t.appSubtitle}
             voucherCount={vouchers.length}
+            actions={
+              <ThemeSwitch
+                themeLabel={t.themeLabel}
+                lightMode={t.lightMode}
+                darkMode={t.darkMode}
+                themeSwitchAria={t.themeSwitchAria}
+              />
+            }
           />
 
           <ExpiringSoonBanner

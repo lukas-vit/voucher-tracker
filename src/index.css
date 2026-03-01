@@ -116,7 +116,29 @@
 }
 
 @layer base {
-  :root, .dark {
+  :root {
+    --background: oklch(0.98 0.005 270);
+    --foreground: oklch(0.18 0.02 270);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.18 0.02 270);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.18 0.02 270);
+    --primary: oklch(0.55 0.22 275);
+    --primary-foreground: oklch(0.98 0 0);
+    --secondary: oklch(0.94 0.01 270);
+    --secondary-foreground: oklch(0.25 0.02 270);
+    --muted: oklch(0.94 0.01 270);
+    --muted-foreground: oklch(0.5 0.02 270);
+    --accent: oklch(0.92 0.02 270);
+    --accent-foreground: oklch(0.25 0.02 270);
+    --destructive: oklch(0.55 0.2 25);
+    --destructive-foreground: oklch(0.98 0 0);
+    --border: oklch(0.88 0.01 270);
+    --input: oklch(0.88 0.01 270);
+    --ring: oklch(0.55 0.22 275);
+  }
+
+  .dark {
     --background: oklch(0.12 0.01 270);
     --foreground: oklch(0.95 0.005 270);
     --card: oklch(0.17 0.01 270);

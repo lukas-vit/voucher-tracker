@@ -43,6 +43,10 @@ export const translations = {
     edit: (name: string) => `Edit ${name}`,
     voucherCount: (count: number) =>
       count === 1 ? "1 voucher" : `${count} vouchers`,
+    themeLabel: "Theme",
+    lightMode: "Light",
+    darkMode: "Dark",
+    themeSwitchAria: "Toggle dark mode",
     category: {
       food: "Food",
       retail: "Retail",
@@ -105,6 +109,10 @@ export const translations = {
       if (count >= 2 && count <= 4) return `${count} vouchery`;
       return `${count} voucherů`;
     },
+    themeLabel: "Motiv",
+    lightMode: "Světlý",
+    darkMode: "Tmavý",
+    themeSwitchAria: "Přepnout tmavý režim",
     category: {
       food: "Jídlo",
       retail: "Maloobchod",
