@@ -21,10 +21,10 @@ export function getColorForCategory(category: VoucherCategory | null): string {
 export interface CreateVoucherInput {
   name: string;
   dueDate: string;
+  price: number;
   code?: string | null;
   category?: VoucherCategory | null;
   color?: string | null;
-  price?: number | null;
 }
 
 export function createVoucher(input: CreateVoucherInput): Voucher {
@@ -42,7 +42,7 @@ export function createVoucher(input: CreateVoucherInput): Voucher {
     category,
     color,
     createdAt: new Date().toISOString(),
-    price: input.price ?? null,
+    price: input.price,
   };
 }
 
@@ -65,7 +65,7 @@ export function updateVoucher(
     code: input.code?.trim() || null,
     category,
     color,
-    price: input.price ?? existing.price ?? null,
+    price: input.price,
   };
 }
 

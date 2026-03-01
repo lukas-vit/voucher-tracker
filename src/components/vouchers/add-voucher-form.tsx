@@ -13,23 +13,30 @@ import { cn } from "@/lib/utils";
 
 type TranslationShape = {
   addVoucher: string;
-  addVoucherDescription: string;
   editVoucher: string;
   editVoucherDescription: string;
   name: string;
   namePlaceholder: string;
   dueDate: string;
   dueDatePlaceholder: string;
-  voucherCodeOptional: string;
+  voucherCode: string;
   codePlaceholder: string;
-  categoryOptional: string;
+  categoryLabel: string;
   none: string;
-  priceOptional: string;
+  price: string;
   pricePlaceholder: string;
   cancel: string;
   save: string;
   category: Record<VoucherCategory, string>;
 };
+
+function RequiredStar() {
+  return (
+    <span className="text-destructive" aria-hidden="true">
+      *
+    </span>
+  );
+}
 
 type AddVoucherFormProps = {
   onAdd: (input: CreateVoucherInput) => void;
@@ -80,23 +87,30 @@ export function AddVoucherForm({
     setPrice("");
   };
 
+  const isPriceValid = (value: string): boolean => {
+    const trimmed = value.trim();
+    if (trimmed === "") return false;
+    const num = parseFloat(trimmed);
+    return !Number.isNaN(num) && num >= 0;
+  };
+
+  const getPriceNumber = (value: string): number => {
+    return parseFloat(value.trim());
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedName = name.trim();
-    if (!trimmedName || !dueDate) return;
-    const priceNum = price.trim() === "" ? null : parseFloat(price.trim());
-    const priceValue =
-      priceNum !== null && !Number.isNaN(priceNum) && priceNum >= 0
-        ? priceNum
-        : null;
+    if (!trimmedName || !dueDate || !isPriceValid(price)) return;
+    const priceValue = getPriceNumber(price);
 
     if (isEditMode && editingVoucher) {
       onUpdate(editingVoucher.id, {
         name: trimmedName,
         dueDate,
+        price: priceValue,
         code: code || null,
         category: category || null,
-        price: priceValue,
       });
       resetForm();
       onEditCancel();
@@ -104,9 +118,9 @@ export function AddVoucherForm({
       onAdd({
         name: trimmedName,
         dueDate,
+        price: priceValue,
         code: code || null,
         category: category || null,
-        price: priceValue,
       });
       resetForm();
       setIsOpen(false);
@@ -159,11 +173,11 @@ export function AddVoucherForm({
           <h2 className="font-semibold">
             {isEditMode ? t.editVoucher : t.addVoucher}
           </h2>
-          <p className="text-sm text-muted-foreground">
-            {isEditMode
-              ? t.editVoucherDescription
-              : t.addVoucherDescription}
-          </p>
+          {isEditMode && (
+            <p className="text-sm text-muted-foreground">
+              {t.editVoucherDescription}
+            </p>
+          )}
         </div>
         <Button
           type="button"
@@ -178,7 +192,9 @@ export function AddVoucherForm({
       <form onSubmit={handleSubmit} className="space-y-5 p-5">
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="add-name">{t.name}</Label>
+            <Label htmlFor="add-name">
+              {t.name} <RequiredStar />
+            </Label>
             <Input
               id="add-name"
               placeholder={t.namePlaceholder}
@@ -188,7 +204,9 @@ export function AddVoucherForm({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="add-dueDate">{t.dueDate}</Label>
+            <Label htmlFor="add-dueDate">
+              {t.dueDate} <RequiredStar />
+            </Label>
             <DatePicker
               id="add-dueDate"
               value={dueDate}
@@ -198,9 +216,24 @@ export function AddVoucherForm({
             />
           </div>
         </div>
+        <div className="space-y-2">
+          <Label htmlFor="add-price">
+            {t.price} <RequiredStar />
+          </Label>
+          <Input
+            id="add-price"
+            type="number"
+            min={0}
+            step={0.01}
+            placeholder={t.pricePlaceholder}
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            aria-label={t.price}
+          />
+        </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="add-code">{t.voucherCodeOptional}</Label>
+            <Label htmlFor="add-code">{t.voucherCode}</Label>
             <Input
               id="add-code"
               placeholder={t.codePlaceholder}
@@ -209,7 +242,7 @@ export function AddVoucherForm({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="add-category">{t.categoryOptional}</Label>
+            <Label htmlFor="add-category">{t.categoryLabel}</Label>
             <Select
               id="add-category"
               value={category}
@@ -226,25 +259,17 @@ export function AddVoucherForm({
             </Select>
           </div>
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="add-price">{t.priceOptional}</Label>
-          <Input
-            id="add-price"
-            type="number"
-            min={0}
-            step={0.01}
-            placeholder={t.pricePlaceholder}
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            aria-label={t.priceOptional}
-          />
-        </div>
 
         <div className="flex justify-end gap-2 border-t pt-4">
           <Button type="button" variant="outline" onClick={handleCancel}>
             {t.cancel}
           </Button>
-          <Button type="submit" disabled={!name.trim() || !dueDate}>
+          <Button
+            type="submit"
+            disabled={
+              !name.trim() || !dueDate || !isPriceValid(price)
+            }
+          >
             {isEditMode ? (
               <>
                 <Pencil className="mr-1.5 h-4 w-4" />
